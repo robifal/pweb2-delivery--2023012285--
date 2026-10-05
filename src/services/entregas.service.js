@@ -81,4 +81,20 @@ export class EntregasService {
     const entrega = await this.buscarPorId(id);
     return entrega.historico;
   }
+
+  async atribuir(id, motoristaId) {
+    if (!motoristaId) throw new AppError('motoristaId é obrigatório', 400);
+
+    const entrega = await this.buscarPorId(id);
+    if (entrega.status !== 'CRIADA') {
+      throw new AppError(`Não é possível atribuir motorista a uma entrega ${entrega.status}`, 422);
+    }
+
+    const historico = [...entrega.historico, {
+      data: new Date().toISOString(),
+      descricao: `Motorista ${motoristaId} atribuído`
+    }];
+
+    return this.repository.atualizar(id, { motoristaId, historico });
+  }
 }
