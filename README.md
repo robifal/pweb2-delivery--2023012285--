@@ -23,11 +23,11 @@ npm run check
 
 ```
 src/
-├── controllers/   entregas.controller.js  -> recebe req e chama o service
-├── services/      entregas.service.js     -> regras de negocio
-├── repositories/  entregas.repository.js  -> acesso aos dados
-├── database/      Database.js             -> arrays em memoria
-├── routes/        entregas.routes.js      -> composição (injeção de dependencia)
+├── controllers/   entregas.controller.js, motoristas.controller.js  -> recebe req e chama o service
+├── services/      entregas.service.js, motoristas.service.js        -> regras de negocio
+├── repositories/  entregas.repository.js, motoristas.repository.js -> acesso aos dados
+├── database/      Database.js             -> arrays em memoria (compartilhados entre entregas e motoristas)
+├── routes/        entregas.routes.js, motoristas.routes.js -> composição (injeção de dependencia)
 └── utils/         AppError.js, errorHandler.js
 ```
 
@@ -69,6 +69,25 @@ curl -X PATCH http://localhost:3000/api/entregas/1/cancelar
 Ver histórico
 ```bash
 curl http://localhost:3000/api/entregas/1/historico
+```
+
+Atribuir motorista (só funciona com entrega CRIADA)
+```bash
+curl -X PATCH http://localhost:3000/api/entregas/1/atribuir \
+  -H "Content-Type: application/json" \
+  -d '{"motoristaId": 1}'
+```
+
+Criar motorista
+```bash
+curl -X POST http://localhost:3000/api/motoristas \
+  -H "Content-Type: application/json" \
+  -d '{"nome": "João", "cpf": "12345678900"}'
+```
+
+Listar entregas de um motorista
+```bash
+curl http://localhost:3000/api/motoristas/1/entregas
 ```
 
 ## Erros
