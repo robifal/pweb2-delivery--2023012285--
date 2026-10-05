@@ -9,7 +9,8 @@ export class EntregasController {
     this.criar = this.criar.bind(this);
     this.avancar = this.avancar.bind(this);
     this.cancelar = this.cancelar.bind(this);
-    this.historico = this.historico.bind(this)
+    this.historico = this.historico.bind(this);
+    this.atribuir = this.atribuir.bind(this)
   }
 
   async listar(req, res, next) {
@@ -51,6 +52,13 @@ export class EntregasController {
     try {
       const eventos = await this.service.historico(Number(req.params.id));
       res.json(eventos);
+    } catch (err) { next(err) }
+  }
+
+  async atribuir(req, res, next) {
+    try {
+      const entrega = await this.service.atribuir(Number(req.params.id), req.body?.motoristaId);
+      res.json(entrega);
     } catch (err) { next(err) }
   }
 }
