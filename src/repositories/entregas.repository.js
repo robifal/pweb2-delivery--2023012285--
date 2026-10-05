@@ -22,6 +22,10 @@ export class EntregasRepository {
     );
   }
 
+  async listarPorMotorista(motoristaId) {
+    return this.db.entregas.filter((e) => e.motoristaId === motoristaId);
+  }
+
   async criar(dados) {
     const nova = { id: this.db.proximoIdEntrega++, ...dados };
     this.db.entregas.push(nova);
